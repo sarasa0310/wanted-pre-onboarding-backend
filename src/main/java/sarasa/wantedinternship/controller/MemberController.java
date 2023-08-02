@@ -24,7 +24,7 @@ public class MemberController {
 
     @PostMapping("/members")
     public ResponseEntity<?> signUp(@RequestBody @Valid SignUpDto dto) {
-        Member member = memberMapper.toEntity(dto);
+        Member member = memberMapper.toMember(dto);
 
         Long savedMemberId = memberService.signUp(member);
 

@@ -9,6 +9,7 @@ import sarasa.wantedinternship.domain.entity.Article;
 import sarasa.wantedinternship.dto.request.ArticleRequestDto;
 import sarasa.wantedinternship.exception.ArticleNotFoundException;
 import sarasa.wantedinternship.exception.NoAuthorityException;
+import sarasa.wantedinternship.mapper.ArticleMapper;
 import sarasa.wantedinternship.repository.ArticleRepository;
 import sarasa.wantedinternship.repository.MemberRepository;
 
@@ -19,6 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ArticleService {
 
+    private final ArticleMapper articleMapper;
     private final ArticleRepository articleRepository;
     private final MemberRepository memberRepository;
 
@@ -47,10 +49,7 @@ public class ArticleService {
 
         validateMemberIdForUpdateAndDelete(memberId, article);
 
-        Optional.ofNullable(dto.title())
-                .ifPresent(article::setTitle);
-        Optional.ofNullable(dto.content())
-                .ifPresent(article::setContent);
+        articleMapper.updateFromDto(dto, article);
 
         return article;
     }

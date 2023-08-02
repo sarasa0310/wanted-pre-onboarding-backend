@@ -7,6 +7,6 @@ import sarasa.wantedinternship.dto.request.SignUpDto;
 @Mapper(componentModel = "spring")
 public interface MemberMapper {
 
-    Member toEntity(SignUpDto dto);
+    Member toMember(SignUpDto dto);
 
 }

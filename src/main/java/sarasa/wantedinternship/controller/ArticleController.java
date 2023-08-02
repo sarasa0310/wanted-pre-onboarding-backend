@@ -25,7 +25,7 @@ public class ArticleController {
     @PostMapping("/articles")
     public ResponseEntity<?> createArticle(@RequestParam Long memberId,
                                            @RequestBody ArticleRequestDto dto) {
-        Article article = articleMapper.toEntity(dto);
+        Article article = articleMapper.toArticle(dto);
 
         Long createdArticleId = articleService.createArticle(memberId, article);
 
@@ -38,7 +38,7 @@ public class ArticleController {
     public ResponseEntity<?> findArticles(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<Article> articles = articleService.findArticles(pageable);
 
-        Page<ArticleResponseDto> responses = articles.map(articleMapper::toDto);
+        Page<ArticleResponseDto> responses = articles.map(articleMapper::toResponse);
 
         return ResponseEntity.ok(responses);
     }
@@ -47,7 +47,7 @@ public class ArticleController {
     public ResponseEntity<?> findOneArticle(@PathVariable("article-id") Long articleId) {
         Article article = articleService.findOneArticle(articleId);
 
-        ArticleResponseDto response = articleMapper.toDto(article);
+        ArticleResponseDto response = articleMapper.toResponse(article);
 
         return ResponseEntity.ok(response);
     }
@@ -58,7 +58,7 @@ public class ArticleController {
                                            @RequestBody ArticleRequestDto dto) {
         Article updatedArticle = articleService.updateArticle(memberId, articleId, dto);
 
-        ArticleResponseDto response = articleMapper.toDto(updatedArticle);
+        ArticleResponseDto response = articleMapper.toResponse(updatedArticle);
 
         return ResponseEntity.ok(response);
     }
