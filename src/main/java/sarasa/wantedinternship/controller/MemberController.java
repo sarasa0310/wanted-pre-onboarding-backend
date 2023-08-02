@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import sarasa.wantedinternship.domain.entity.Member;
-import sarasa.wantedinternship.dto.SignUpDto;
+import sarasa.wantedinternship.dto.request.SignUpDto;
 import sarasa.wantedinternship.mapper.MemberMapper;
 import sarasa.wantedinternship.service.MemberService;
 
