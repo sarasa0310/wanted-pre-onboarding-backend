@@ -1,17 +1,16 @@
 package sarasa.wantedinternship.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
-@Getter
+@Getter @Setter
 @ToString
 @NoArgsConstructor
 public class Article {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     @Column(name = "article_id")
     private Long id;
 
@@ -25,5 +24,9 @@ public class Article {
         this.title = title;
         this.content = content;
     }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
 }
