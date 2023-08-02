@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import sarasa.wantedinternship.domain.entity.Member;
 import sarasa.wantedinternship.dto.SignUpDto;
 import sarasa.wantedinternship.mapper.MemberMapper;
-import sarasa.wantedinternship.repository.MemberRepository;
+import sarasa.wantedinternship.service.MemberService;
 
 import java.net.URI;
 
@@ -20,17 +20,17 @@ import java.net.URI;
 public class MemberController {
 
     private final MemberMapper memberMapper;
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
     @PostMapping("/members")
     public ResponseEntity<?> signUp(@RequestBody @Valid SignUpDto dto) {
         Member member = memberMapper.toEntity(dto);
 
-        Member savedMember = memberRepository.save(member);
+        Long savedMemberId = memberService.signUp(member);
 
         return ResponseEntity.created(
-                URI.create("/members/" + savedMember.getId()))
-                .body(savedMember);
+                URI.create("/members/" + savedMemberId))
+                .build();
     }
 
 }
