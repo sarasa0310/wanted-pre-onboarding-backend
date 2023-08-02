@@ -1,17 +1,16 @@
 package sarasa.wantedinternship.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
-@Getter
 @ToString
+@Getter @Setter
 @NoArgsConstructor
 public class Member {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     @Column(name = "member_id")
     private Long id;
 
