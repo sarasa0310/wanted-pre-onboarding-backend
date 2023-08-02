@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sarasa.wantedinternship.domain.entity.Article;
-import sarasa.wantedinternship.dto.ArticleUpdateDto;
+import sarasa.wantedinternship.dto.request.ArticleRequestDto;
 import sarasa.wantedinternship.exception.ArticleNotFoundException;
 import sarasa.wantedinternship.exception.NoAuthorityException;
 import sarasa.wantedinternship.repository.ArticleRepository;
@@ -42,10 +42,10 @@ public class ArticleService {
     }
 
     public Article updateArticle(Long memberId, Long articleId,
-                                 ArticleUpdateDto dto) {
+                                 ArticleRequestDto dto) {
         Article article = findOneArticle(articleId);
 
-        validateAuthor(memberId, article);
+        validateMemberIdForUpdateAndDelete(memberId, article);
 
         Optional.ofNullable(dto.title())
                 .ifPresent(article::setTitle);
@@ -58,12 +58,12 @@ public class ArticleService {
     public void deleteArticle(Long memberId, Long articleId) {
         Article article = findOneArticle(articleId);
 
-        validateAuthor(memberId, article);
+        validateMemberIdForUpdateAndDelete(memberId, article);
 
         articleRepository.delete(article);
     }
 
-    private void validateAuthor(Long memberId, Article article) {
+    private void validateMemberIdForUpdateAndDelete(Long memberId, Article article) {
         if (!article.getMember().getId().equals(memberId)) {
             throw new NoAuthorityException("게시글 작성자만 수정 및 삭제가 가능합니다.");
         }
