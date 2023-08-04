@@ -10,7 +10,8 @@ import org.springframework.security.config.annotation.web.configurers.*;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import sarasa.wantedinternship.security.jwt.JwtAuthenticationFilter;
 import sarasa.wantedinternship.security.jwt.JwtProvider;
 
@@ -20,6 +21,7 @@ import sarasa.wantedinternship.security.jwt.JwtProvider;
 public class SecurityConfig {
 
     private final JwtProvider jwtProvider;
+    private final HandlerMappingIntrospector introspector;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -30,10 +32,8 @@ public class SecurityConfig {
                 .formLogin(FormLoginConfigurer::disable)
                 .httpBasic(HttpBasicConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers(antMatcher(HttpMethod.POST, "/members")).permitAll()
-//                        .requestMatchers(antMatcher(HttpMethod.POST, "/login")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/members")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/login")).permitAll()
+                        .requestMatchers(new MvcRequestMatcher(introspector, "/members")).permitAll()
+                        .requestMatchers(new MvcRequestMatcher(introspector, "/login")).permitAll()
                         .anyRequest().authenticated())
                 .apply(new CustomFilterConfigurer());
 
