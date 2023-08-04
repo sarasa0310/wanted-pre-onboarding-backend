@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import sarasa.wantedinternship.domain.entity.Article;
 import sarasa.wantedinternship.dto.request.ArticleRequestDto;
@@ -23,7 +24,7 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @PostMapping("/articles")
-    public ResponseEntity<?> createArticle(@RequestParam Long memberId,
+    public ResponseEntity<?> createArticle(@AuthenticationPrincipal Long memberId,
                                            @RequestBody ArticleRequestDto dto) {
         Article article = articleMapper.toArticle(dto);
 
@@ -53,7 +54,7 @@ public class ArticleController {
     }
 
     @PatchMapping("/articles/{article-id}")
-    public ResponseEntity<?> updateArticle(@RequestParam Long memberId,
+    public ResponseEntity<?> updateArticle(@AuthenticationPrincipal Long memberId,
                                            @PathVariable("article-id") Long articleId,
                                            @RequestBody ArticleRequestDto dto) {
         Article updatedArticle = articleService.updateArticle(memberId, articleId, dto);
@@ -64,7 +65,7 @@ public class ArticleController {
     }
 
     @DeleteMapping("/articles/{article-id}")
-    public ResponseEntity<?> deleteArticle(@RequestParam Long memberId,
+    public ResponseEntity<?> deleteArticle(@AuthenticationPrincipal Long memberId,
                                            @PathVariable("article-id") Long articleId) {
         articleService.deleteArticle(memberId, articleId);
 
