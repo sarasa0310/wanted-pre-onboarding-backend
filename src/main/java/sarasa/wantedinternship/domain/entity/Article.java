@@ -20,9 +20,10 @@ public class Article {
     @Column(nullable = false)
     private String content;
 
-    public Article(String title, String content) {
+    public Article(String title, String content, Member member) {
         this.title = title;
         this.content = content;
+        this.member = member;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
