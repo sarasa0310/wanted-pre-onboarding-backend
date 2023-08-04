@@ -40,7 +40,7 @@ public class SecurityConfig {
                         .requestMatchers(antMatcher(HttpMethod.POST, "/login")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.GET, "/articles")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.GET, "/articles/**")).permitAll()
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .apply(new CustomFilterConfigurer());
 
         return http.build();
