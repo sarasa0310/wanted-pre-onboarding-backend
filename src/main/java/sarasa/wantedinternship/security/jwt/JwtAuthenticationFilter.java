@@ -53,14 +53,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private String createAccessToken(Member member) {
         Map<String, Object> claims = new HashMap<>();
-
         claims.put("memberId", member.getId());
-        claims.put("email", member.getEmail());
 
         String subject = member.getEmail();
-
         Instant expiration = jwtProvider.getTokenExpiration(jwtProvider.getAccessTokenExpirationMinutes());
-
         String base64EncodedSecretKey = jwtProvider.encodeBase64SecretKey(jwtProvider.getSecretKey());
 
         return jwtProvider.generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);

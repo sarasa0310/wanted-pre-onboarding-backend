@@ -1,5 +1,7 @@
 package sarasa.wantedinternship.security.jwt;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
@@ -46,6 +48,15 @@ public class JwtProvider {
 
     public Instant getTokenExpiration(int expirationMinutes) {
         return Instant.now().plus(Duration.ofMinutes(expirationMinutes));
+    }
+
+    public Jws<Claims> getClaims(String jws, String base64EncodedSecretKey) {
+        Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
+
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(jws);
     }
 
     private Key getKeyFromBase64EncodedKey(String base64EncodedSecretKey) {

@@ -6,18 +6,19 @@ import org.springframework.security.core.userdetails.UserDetails;
 import sarasa.wantedinternship.domain.entity.Member;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 public class MemberDetails extends Member implements UserDetails {
 
     public MemberDetails(Member member) {
+        setId(member.getId());
         setEmail(member.getEmail());
         setPassword(member.getPassword());
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority("USER"));
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override

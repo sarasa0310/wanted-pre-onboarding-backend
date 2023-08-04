@@ -10,7 +10,6 @@ import lombok.*;
 public class Member {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     @Column(name = "member_id")
     private Long id;
 
