@@ -1,6 +1,7 @@
 package sarasa.wantedinternship.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sarasa.wantedinternship.domain.entity.Member;
@@ -13,9 +14,13 @@ import sarasa.wantedinternship.repository.MemberRepository;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public Long signUp(Member member) {
         validateAlreadyExistsMember(member);
+
+        String encryptedPassword = passwordEncoder.encode(member.getPassword());
+        member.setPassword(encryptedPassword);
 
         Member savedMember = memberRepository.save(member);
 
