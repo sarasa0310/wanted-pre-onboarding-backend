@@ -30,20 +30,14 @@ public class LoadDatabase implements CommandLineRunner {
 
         members.forEach(memberService::signUp);
 
-        Article article1 = new Article("test_title1", "test_content1");
-        article1.setMember(member1);
-        Article article2 = new Article("test_title2", "test_content2");
-        article2.setMember(member2);
-        Article article3 = new Article("test_title3", "test_content3");
-        article3.setMember(member3);
-        Article article4 = new Article("test_title4", "test_content4");
-        article4.setMember(member4);
-        Article article5 = new Article("test_title5", "test_content5");
-        article5.setMember(member5);
+        Article article1 = new Article("test_title1", "test_content1", member1);
+        Article article2 = new Article("test_title2", "test_content2", member2);
+        Article article3 = new Article("test_title3", "test_content3", member3);
+        Article article4 = new Article("test_title4", "test_content4", member4);
+        Article article5 = new Article("test_title5", "test_content5", member5);
 
         List<Article> articles = List.of(
-                article1, article2, article3, article4, article5
-        );
+                article1, article2, article3, article4, article5);
 
         articleRepository.saveAll(articles);
     }
