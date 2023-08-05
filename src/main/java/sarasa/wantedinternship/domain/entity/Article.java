@@ -10,7 +10,6 @@ import lombok.*;
 public class Article {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     @Column(name = "article_id")
     private Long id;
 
