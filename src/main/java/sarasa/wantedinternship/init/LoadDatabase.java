@@ -10,7 +10,7 @@ import sarasa.wantedinternship.service.MemberService;
 
 import java.util.List;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class LoadDatabase implements CommandLineRunner {
 
