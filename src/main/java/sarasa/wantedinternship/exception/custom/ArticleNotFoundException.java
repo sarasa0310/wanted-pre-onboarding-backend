@@ -1,4 +1,4 @@
-package sarasa.wantedinternship.exception;
+package sarasa.wantedinternship.exception.custom;
 
 import jakarta.persistence.EntityNotFoundException;
 

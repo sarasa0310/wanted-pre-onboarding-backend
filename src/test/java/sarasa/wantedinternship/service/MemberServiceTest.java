@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import sarasa.wantedinternship.domain.entity.Member;
-import sarasa.wantedinternship.exception.MemberAlreadyExistsException;
+import sarasa.wantedinternship.exception.custom.MemberAlreadyExistsException;
 import sarasa.wantedinternship.repository.MemberRepository;
 
 import static org.assertj.core.api.Assertions.*;
