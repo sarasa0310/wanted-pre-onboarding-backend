@@ -13,8 +13,6 @@ import sarasa.wantedinternship.mapper.ArticleMapper;
 import sarasa.wantedinternship.repository.ArticleRepository;
 import sarasa.wantedinternship.repository.MemberRepository;
 
-import java.util.Optional;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
