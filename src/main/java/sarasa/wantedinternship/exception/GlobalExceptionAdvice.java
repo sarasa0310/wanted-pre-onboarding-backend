@@ -1,11 +1,14 @@
 package sarasa.wantedinternship.exception;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import sarasa.wantedinternship.dto.response.CustomFieldError;
+import sarasa.wantedinternship.dto.response.ExceptionResponseDto;
 import sarasa.wantedinternship.exception.custom.ArticleNotFoundException;
 import sarasa.wantedinternship.exception.custom.MemberAlreadyExistsException;
 import sarasa.wantedinternship.exception.custom.NoAuthorityException;
@@ -33,21 +36,24 @@ public class GlobalExceptionAdvice {
     }
 
     @ExceptionHandler
-    public ResponseEntity<?> handleNoAuthorityException(
-            NoAuthorityException e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<?> handleArticleNotFoundException(
-            ArticleNotFoundException e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<?> handleMemberAlreadyExistsException(
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ExceptionResponseDto handleMemberAlreadyExistsException(
             MemberAlreadyExistsException e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
+        return new ExceptionResponseDto(HttpStatus.CONFLICT.value(), e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ExceptionResponseDto handleArticleNotFoundException(
+            ArticleNotFoundException e) {
+        return new ExceptionResponseDto(HttpStatus.NOT_FOUND.value(), e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ExceptionResponseDto handleNoAuthorityException(
+            NoAuthorityException e) {
+        return new ExceptionResponseDto(HttpStatus.FORBIDDEN.value(), e.getMessage());
     }
 
 }
