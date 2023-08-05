@@ -5,7 +5,6 @@ import lombok.*;
 
 @Entity
 @Getter @Setter
-@ToString
 @NoArgsConstructor
 public class Article {
 
@@ -26,7 +25,7 @@ public class Article {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
 }

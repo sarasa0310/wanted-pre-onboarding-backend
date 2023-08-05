@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import sarasa.wantedinternship.dto.response.CustomFieldError;
-import sarasa.wantedinternship.dto.response.ExceptionResponseDto;
+import sarasa.wantedinternship.dto.response.ExceptionResponse;
 import sarasa.wantedinternship.exception.custom.ArticleNotFoundException;
 import sarasa.wantedinternship.exception.custom.MemberAlreadyExistsException;
 import sarasa.wantedinternship.exception.custom.NoAuthorityException;
@@ -37,23 +37,23 @@ public class GlobalExceptionAdvice {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ExceptionResponseDto handleMemberAlreadyExistsException(
+    public ExceptionResponse handleMemberAlreadyExistsException(
             MemberAlreadyExistsException e) {
-        return new ExceptionResponseDto(HttpStatus.CONFLICT.value(), e.getMessage());
+        return new ExceptionResponse(HttpStatus.CONFLICT.value(), e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ExceptionResponseDto handleArticleNotFoundException(
+    public ExceptionResponse handleArticleNotFoundException(
             ArticleNotFoundException e) {
-        return new ExceptionResponseDto(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        return new ExceptionResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ExceptionResponseDto handleNoAuthorityException(
+    public ExceptionResponse handleNoAuthorityException(
             NoAuthorityException e) {
-        return new ExceptionResponseDto(HttpStatus.FORBIDDEN.value(), e.getMessage());
+        return new ExceptionResponse(HttpStatus.FORBIDDEN.value(), e.getMessage());
     }
 
 }

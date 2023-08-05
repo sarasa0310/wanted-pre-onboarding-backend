@@ -12,7 +12,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import sarasa.wantedinternship.domain.entity.Article;
 import sarasa.wantedinternship.domain.entity.Member;
-import sarasa.wantedinternship.dto.request.ArticleRequestDto;
+import sarasa.wantedinternship.dto.request.ArticleRequest;
 import sarasa.wantedinternship.exception.custom.ArticleNotFoundException;
 import sarasa.wantedinternship.exception.custom.NoAuthorityException;
 import sarasa.wantedinternship.mapper.ArticleMapper;
@@ -136,12 +136,12 @@ class ArticleServiceTest {
     @DisplayName("게시글 수정 테스트 - 정상 케이스(게시글 작성자가 수정 시도)")
     void updateArticle() {
         // given
-        ArticleRequestDto requestDto = new ArticleRequestDto("updated_title", "updated_content");
+        ArticleRequest requestDto = new ArticleRequest("updated_title", "updated_content");
 
         given(articleRepository.findById(anyLong()))
                 .willReturn(Optional.ofNullable(article));
         doAnswer(invocation -> {
-            ArticleRequestDto dto = invocation.getArgument(0);
+            ArticleRequest dto = invocation.getArgument(0);
             Article article = invocation.getArgument(1);
             article.setTitle(dto.title());
             article.setContent(dto.content());
@@ -165,7 +165,7 @@ class ArticleServiceTest {
     @DisplayName("게시글 수정 테스트 - 비정상 케이스(게시글 작성자가 아닌 사용자가 수정 시도)")
     void givenNotSameAuthor_WhenUpdateArticle_ThenThrowNoAuthorityException() {
         // given
-        ArticleRequestDto requestDto = new ArticleRequestDto("updated_title", "updated_content");
+        ArticleRequest requestDto = new ArticleRequest("updated_title", "updated_content");
 
         given(articleRepository.findById(anyLong()))
                 .willReturn(Optional.ofNullable(article));

@@ -1,6 +1,6 @@
 package sarasa.wantedinternship.dto.request;
 
-public record ArticleRequestDto(
+public record ArticleRequest(
         String title,
         String content
 ) {

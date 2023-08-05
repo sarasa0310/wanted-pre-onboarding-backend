@@ -29,8 +29,7 @@ public class MemberController {
         Long savedMemberId = memberService.signUp(member);
 
         return ResponseEntity.created(
-                URI.create("/members/" + savedMemberId))
-                .build();
+                URI.create("/members/" + savedMemberId)).build();
     }
 
 }
