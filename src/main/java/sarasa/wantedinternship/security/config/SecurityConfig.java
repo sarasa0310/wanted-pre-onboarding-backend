@@ -25,7 +25,7 @@ public class SecurityConfig {
 
     private final JwtProvider jwtProvider;
 
-    @Bean // todo: CORS, 엔드포인트 보안 설정
+    @Bean // todo: CORS
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .headers(headers -> headers
@@ -36,11 +36,12 @@ public class SecurityConfig {
                 .formLogin(FormLoginConfigurer::disable)
                 .httpBasic(HttpBasicConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(antMatcher("/h2/**")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.POST, "/members")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.POST, "/login")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.GET, "/articles")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.GET, "/articles/**")).permitAll()
-                        .anyRequest().permitAll())
+                        .anyRequest().authenticated())
                 .apply(new CustomFilterConfigurer());
 
         return http.build();
