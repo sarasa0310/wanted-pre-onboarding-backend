@@ -2,18 +2,18 @@ package sarasa.wantedinternship.mapper;
 
 import org.mapstruct.*;
 import sarasa.wantedinternship.domain.entity.Article;
-import sarasa.wantedinternship.dto.request.ArticleRequestDto;
-import sarasa.wantedinternship.dto.response.ArticleResponseDto;
+import sarasa.wantedinternship.dto.request.ArticleRequest;
+import sarasa.wantedinternship.dto.response.ArticleResponse;
 
 @Mapper(componentModel = "spring")
 public interface ArticleMapper {
 
-    Article toArticle(ArticleRequestDto dto);
+    Article toArticle(ArticleRequest dto);
 
     @Mapping(source = "id", target = "articleId")
-    ArticleResponseDto toResponse(Article article);
+    ArticleResponse toResponse(Article article);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateFromDto(ArticleRequestDto dto, @MappingTarget Article entity);
+    void updateFromDto(ArticleRequest dto, @MappingTarget Article entity);
 
 }

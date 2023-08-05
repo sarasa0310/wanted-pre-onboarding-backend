@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sarasa.wantedinternship.domain.entity.Article;
-import sarasa.wantedinternship.dto.request.ArticleRequestDto;
+import sarasa.wantedinternship.dto.request.ArticleRequest;
 import sarasa.wantedinternship.exception.custom.ArticleNotFoundException;
 import sarasa.wantedinternship.exception.custom.NoAuthorityException;
 import sarasa.wantedinternship.mapper.ArticleMapper;
@@ -25,9 +25,7 @@ public class ArticleService {
     public Long createArticle(Long memberId, Article article) {
         article.setMember(memberRepository.getReferenceById(memberId));
 
-        Article savedArticle = articleRepository.save(article);
-
-        return savedArticle.getId();
+        return articleRepository.save(article).getId();
     }
 
     @Transactional(readOnly = true)
@@ -42,7 +40,7 @@ public class ArticleService {
     }
 
     public Article updateArticle(Long memberId, Long articleId,
-                                 ArticleRequestDto dto) {
+                                 ArticleRequest dto) {
         Article article = findOneArticle(articleId);
 
         validateMemberIdForUpdateAndDelete(memberId, article);

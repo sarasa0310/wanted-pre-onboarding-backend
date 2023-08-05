@@ -1,6 +1,6 @@
 package sarasa.wantedinternship.dto.response;
 
-public record ExceptionResponseDto(
+public record ExceptionResponse(
         int statusCode,
         String message
 ) {

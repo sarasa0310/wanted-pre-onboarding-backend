@@ -9,8 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import sarasa.wantedinternship.domain.entity.Article;
-import sarasa.wantedinternship.dto.request.ArticleRequestDto;
-import sarasa.wantedinternship.dto.response.ArticleResponseDto;
+import sarasa.wantedinternship.dto.request.ArticleRequest;
+import sarasa.wantedinternship.dto.response.ArticleResponse;
 import sarasa.wantedinternship.mapper.ArticleMapper;
 import sarasa.wantedinternship.service.ArticleService;
 
@@ -25,21 +25,20 @@ public class ArticleController {
 
     @PostMapping("/articles")
     public ResponseEntity<?> createArticle(@AuthenticationPrincipal Long memberId,
-                                           @RequestBody ArticleRequestDto dto) {
+                                           @RequestBody ArticleRequest dto) {
         Article article = articleMapper.toArticle(dto);
 
         Long createdArticleId = articleService.createArticle(memberId, article);
 
         return ResponseEntity.created(
-                URI.create("/articles/" + createdArticleId))
-                .build();
+                URI.create("/articles/" + createdArticleId)).build();
     }
 
     @GetMapping("/articles")
     public ResponseEntity<?> findArticles(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<Article> articles = articleService.findArticles(pageable);
 
-        Page<ArticleResponseDto> responses = articles.map(articleMapper::toResponse);
+        Page<ArticleResponse> responses = articles.map(articleMapper::toResponse);
 
         return ResponseEntity.ok(responses);
     }
@@ -48,7 +47,7 @@ public class ArticleController {
     public ResponseEntity<?> findOneArticle(@PathVariable("article-id") Long articleId) {
         Article article = articleService.findOneArticle(articleId);
 
-        ArticleResponseDto response = articleMapper.toResponse(article);
+        ArticleResponse response = articleMapper.toResponse(article);
 
         return ResponseEntity.ok(response);
     }
@@ -56,10 +55,10 @@ public class ArticleController {
     @PatchMapping("/articles/{article-id}")
     public ResponseEntity<?> updateArticle(@AuthenticationPrincipal Long memberId,
                                            @PathVariable("article-id") Long articleId,
-                                           @RequestBody ArticleRequestDto dto) {
+                                           @RequestBody ArticleRequest dto) {
         Article updatedArticle = articleService.updateArticle(memberId, articleId, dto);
 
-        ArticleResponseDto response = articleMapper.toResponse(updatedArticle);
+        ArticleResponse response = articleMapper.toResponse(updatedArticle);
 
         return ResponseEntity.ok(response);
     }

@@ -25,7 +25,7 @@ public class SecurityConfig {
 
     private final JwtProvider jwtProvider;
 
-    @Bean
+    @Bean // todo: CORS, 엔드포인트 보안 설정
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .headers(headers -> headers
