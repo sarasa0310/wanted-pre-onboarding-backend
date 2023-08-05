@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    url: ${WANTED_RDS_URL}
+    username: ${WANTED_RDS_ID}
+    password: ${WANTED_RDS_KEY}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+jwt:
+  key: ${JWT_SECRET_KEY}
+  access-token-expiration-minutes: 30
