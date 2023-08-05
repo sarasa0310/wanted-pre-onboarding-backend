@@ -5,7 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sarasa.wantedinternship.domain.entity.Member;
-import sarasa.wantedinternship.exception.MemberAlreadyExistsException;
+import sarasa.wantedinternship.exception.custom.MemberAlreadyExistsException;
 import sarasa.wantedinternship.repository.MemberRepository;
 
 @Service
