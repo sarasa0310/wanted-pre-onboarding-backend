@@ -2,9 +2,9 @@ package sarasa.wantedinternship.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
-@ToString
 @Getter @Setter
 @NoArgsConstructor
 public class Member {
@@ -22,6 +22,10 @@ public class Member {
     public Member(String email, String password) {
         this.email = email;
         this.password = password;
+    }
+
+    public void encryptPassword(PasswordEncoder encoder, String rawPassword) {
+        this.password = encoder.encode(rawPassword);
     }
 
 }
