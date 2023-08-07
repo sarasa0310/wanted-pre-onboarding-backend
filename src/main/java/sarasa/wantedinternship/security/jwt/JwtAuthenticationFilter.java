@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import sarasa.wantedinternship.domain.entity.Member;
-import sarasa.wantedinternship.dto.request.LoginDto;
+import sarasa.wantedinternship.dto.request.EmailPasswordDto;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -28,16 +28,16 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         ObjectMapper objectMapper = new ObjectMapper();
-        LoginDto loginDto;
+        EmailPasswordDto dto;
 
         try {
-            loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class);
+            dto = objectMapper.readValue(request.getInputStream(), EmailPasswordDto.class);
         } catch (IOException e) {
             throw new RuntimeException("Failed to read and parse the login request.", e);
         }
 
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDto.email(), loginDto.password());
+                new UsernamePasswordAuthenticationToken(dto.email(), dto.password());
 
         return authenticationManager.authenticate(authenticationToken);
     }

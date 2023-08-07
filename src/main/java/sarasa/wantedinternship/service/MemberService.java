@@ -19,7 +19,8 @@ public class MemberService {
     public Long signUp(Member member) {
         validateAlreadyExistsMember(member);
 
-        member.encryptPassword(passwordEncoder, member.getPassword());
+        String encryptedPassword = passwordEncoder.encode(member.getPassword());
+        member.setPassword(encryptedPassword);
 
         return memberRepository.save(member).getId();
     }

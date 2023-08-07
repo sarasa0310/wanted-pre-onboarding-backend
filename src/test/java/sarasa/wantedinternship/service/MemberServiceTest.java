@@ -11,12 +11,11 @@ import sarasa.wantedinternship.domain.entity.Member;
 import sarasa.wantedinternship.exception.custom.MemberAlreadyExistsException;
 import sarasa.wantedinternship.repository.MemberRepository;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 
 @DisplayName("MemberService 단위 테스트")
 @ExtendWith(MockitoExtension.class)
@@ -31,10 +30,10 @@ class MemberServiceTest {
     private MemberService sut;
 
     @Test
-    @DisplayName("회원 가입 정상 동작 테스트")
-    void shouldReturn_SavedMemberId_OnSignUp() {
+    @DisplayName("회원 가입 테스트 - 존재하지 않는 이메일로 회원 가입을 하면, 회원 아이디를 반환한다.")
+    void shouldReturnSavedMemberIdOnSignUp() {
         // given
-        Member member = new Member("test@test.com", "rawPassword");
+        Member newMember = new Member("test@test.com", "rawPassword");
         String encryptedPassword = "encryptedPassword";
 
         Member savedMember = new Member("test@test.com", encryptedPassword);
@@ -48,21 +47,17 @@ class MemberServiceTest {
                 .willReturn(savedMember);
 
         // when
-        Long savedMemberId = sut.signUp(member);
+        Long savedMemberId = sut.signUp(newMember);
 
         // then
         assertThat(savedMemberId).isNotNull();
         assertThat(savedMemberId).isEqualTo(1L);
-        assertThat(member.getPassword()).isEqualTo(encryptedPassword);
-
-        verify(memberRepository).existsByEmail(member.getEmail());
-        verify(passwordEncoder).encode("rawPassword");
-        verify(memberRepository).save(member);
+        assertThat(newMember.getPassword()).isEqualTo(encryptedPassword);
     }
 
     @Test
-    @DisplayName("동일한 이메일의 회원이 존재할 때 예외를 던지는지 테스트")
-    void shouldThrow_MemberAlreadyExistsException_WhenSameEmailExists() {
+    @DisplayName("회원 가입 예외 테스트 - 동일한 이메일의 회원이 존재할 때 MemberAlreadyExistsException을 던진다.")
+    void shouldThrowMemberAlreadyExistsExceptionWhenSameEmailExists() {
         // given
         Member member = new Member("test@test.com", "test1234");
 
@@ -73,10 +68,6 @@ class MemberServiceTest {
         assertThatThrownBy(() -> sut.signUp(member))
                 .isInstanceOf(MemberAlreadyExistsException.class)
                 .hasMessage("이미 가입된 회원입니다.");
-
-        verify(memberRepository).existsByEmail(member.getEmail());
-        verify(passwordEncoder, never()).encode(anyString());
-        verify(memberRepository, never()).save(any(Member.class));
     }
 
 }

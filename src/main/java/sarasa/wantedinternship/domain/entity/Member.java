@@ -1,8 +1,10 @@
 package sarasa.wantedinternship.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import jakarta.validation.constraints.Email;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter @Setter
@@ -13,6 +15,7 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
+    @Email
     @Column(nullable = false, updatable = false, unique = true)
     private String email;
 
@@ -22,10 +25,6 @@ public class Member {
     public Member(String email, String password) {
         this.email = email;
         this.password = password;
-    }
-
-    public void encryptPassword(PasswordEncoder encoder, String rawPassword) {
-        this.password = encoder.encode(rawPassword);
     }
 
 }

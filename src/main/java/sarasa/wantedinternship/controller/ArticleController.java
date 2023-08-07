@@ -3,7 +3,6 @@ package sarasa.wantedinternship.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,6 +14,8 @@ import sarasa.wantedinternship.mapper.ArticleMapper;
 import sarasa.wantedinternship.service.ArticleService;
 
 import java.net.URI;
+
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,7 +36,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articles")
-    public ResponseEntity<?> findArticles(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<?> findArticles(@PageableDefault(sort = "id", direction = DESC) Pageable pageable) {
         Page<Article> articles = articleService.findArticles(pageable);
 
         Page<ArticleResponse> responses = articles.map(articleMapper::toResponse);
@@ -43,8 +44,8 @@ public class ArticleController {
         return ResponseEntity.ok(responses);
     }
 
-    @GetMapping("/articles/{article-id}")
-    public ResponseEntity<?> findOneArticle(@PathVariable("article-id") Long articleId) {
+    @GetMapping("/articles/{articleId}")
+    public ResponseEntity<?> findOneArticle(@PathVariable Long articleId) {
         Article article = articleService.findOneArticle(articleId);
 
         ArticleResponse response = articleMapper.toResponse(article);
@@ -52,9 +53,9 @@ public class ArticleController {
         return ResponseEntity.ok(response);
     }
 
-    @PatchMapping("/articles/{article-id}")
+    @PatchMapping("/articles/{articleId}")
     public ResponseEntity<?> updateArticle(@AuthenticationPrincipal Long memberId,
-                                           @PathVariable("article-id") Long articleId,
+                                           @PathVariable Long articleId,
                                            @RequestBody ArticleRequest dto) {
         Article updatedArticle = articleService.updateArticle(memberId, articleId, dto);
 
@@ -63,9 +64,9 @@ public class ArticleController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/articles/{article-id}")
+    @DeleteMapping("/articles/{articleId}")
     public ResponseEntity<?> deleteArticle(@AuthenticationPrincipal Long memberId,
-                                           @PathVariable("article-id") Long articleId) {
+                                           @PathVariable Long articleId) {
         articleService.deleteArticle(memberId, articleId);
 
         return ResponseEntity.noContent().build();

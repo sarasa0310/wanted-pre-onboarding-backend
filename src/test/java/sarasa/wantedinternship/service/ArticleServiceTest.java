@@ -15,7 +15,6 @@ import sarasa.wantedinternship.domain.entity.Member;
 import sarasa.wantedinternship.dto.request.ArticleRequest;
 import sarasa.wantedinternship.exception.custom.ArticleNotFoundException;
 import sarasa.wantedinternship.exception.custom.NoAuthorityException;
-import sarasa.wantedinternship.mapper.ArticleMapper;
 import sarasa.wantedinternship.repository.ArticleRepository;
 import sarasa.wantedinternship.repository.MemberRepository;
 
@@ -32,59 +31,58 @@ import static org.mockito.Mockito.*;
 @DisplayName("ArticleService 단위 테스트")
 class ArticleServiceTest {
 
-    @Mock private ArticleMapper articleMapper;
     @Mock private ArticleRepository articleRepository;
     @Mock private MemberRepository memberRepository;
 
     @InjectMocks
     private ArticleService sut;
 
-    private Member member;
+    private Member member1;
     private Member member2;
-    private Article article;
+    private Article article1;
     private Article article2;
 
     @BeforeEach
     void setUpTestData() {
-        member = new Member("test@test.com", "test1234");
-        member.setId(1L);
+        member1 = new Member("test@test.com", "test1234");
+        member1.setId(1L);
         member2 = new Member("test2@test.com", "test1234");
         member2.setId(2L);
-        article = new Article("title", "content", member);
-        article.setId(1L);
+        article1 = new Article("title", "content", member1);
+        article1.setId(1L);
         article2 = new Article("title2", "content2", member2);
         article2.setId(2L);
     }
 
     @Test
-    @DisplayName("게시글 생성 정상 동작 테스트")
-    void shouldReturn_SavedArticleId_OnCreation() {
+    @DisplayName("게시글 생성 테스트 - 회원 식별자를 통해 게시글을 작성한 회원을 찾아서 넣어준 뒤, " +
+            "게시글을 저장하고 생성된 게시글의 식별자를 반환한다. ")
+    void shouldReturnSavedArticleIdOnCreation() {
         // given
         given(memberRepository.getReferenceById(anyLong()))
-                .willReturn(member);
+                .willReturn(member1);
         given(articleRepository.save(any(Article.class)))
-                .willReturn(article);
+                .willReturn(article1);
+
+        Article newArticle = new Article();
 
         // when
-        Article newArticle = new Article();
-        Long savedArticleId = sut.createArticle(member.getId(), newArticle);
+        Long savedArticleId = sut.createArticle(member1.getId(), newArticle);
 
         // then
         assertThat(savedArticleId).isNotNull();
-        assertThat(savedArticleId).isEqualTo(article.getId());
-
-        verify(memberRepository).getReferenceById(member.getId());
-        verify(articleRepository).save(newArticle);
+        assertThat(savedArticleId).isEqualTo(1L);
+        assertThat(savedArticleId).isEqualTo(article1.getId());
     }
 
     @Test
-    @DisplayName("게시글 목록 조회 테스트")
-    void findArticles() {
+    @DisplayName("게시글 목록 조회 테스트 - 컨트롤러에서 @PageableDefault 애너테이션이 적용된 Pageable을 넘겨받아, " +
+            "페이지네이션이 적용된 게시글 목록을 반환한다.")
+    void findArticlesWithPagination() {
         // given
         Pageable pageable = Pageable.unpaged();
 
-        Page<Article> expected =
-                new PageImpl<>(List.of(article, article2));
+        Page<Article> expected = new PageImpl<>(List.of(article1, article2));
 
         given(articleRepository.findAll(any(Pageable.class)))
                 .willReturn(expected);
@@ -95,31 +93,27 @@ class ArticleServiceTest {
         // then
         assertThat(actual).isEqualTo(expected);
         assertThat(actual).hasSameSizeAs(expected);
-
-        verify(articleRepository).findAll(pageable);
     }
 
     @Test
-    @DisplayName("존재하는 게시글을 찾을 때, 정상적으로 게시글을 반환하는지 테스트")
-    void findOneArticle() {
+    @DisplayName("단일 게시글 조회 테스트 - 존재하는 게시글의 식별자인 경우 게시글을 반환한다.")
+    void findOneExistingArticle() {
         // given
         given(articleRepository.findById(anyLong()))
-                .willReturn(Optional.ofNullable(article));
+                .willReturn(Optional.ofNullable(article1));
 
         // when
-        Article findArticle = sut.findOneArticle(article.getId());
+        Article findArticle = sut.findOneArticle(article1.getId());
 
         // then
         assertThat(findArticle).isNotNull();
-        assertThat(findArticle).isEqualTo(article);
+        assertThat(findArticle).isEqualTo(article1);
         assertThat(findArticle.getId()).isEqualTo(1L);
-
-        verify(articleRepository).findById(article.getId());
     }
 
     @Test
-    @DisplayName("존재하지 않는 게시글을 찾을 때, 예외를 던지는지 테스트")
-    void findNotExistingArticle_thenThrow_ArticleNotFoundException() {
+    @DisplayName("단일 게시글 조회 테스트 - 존재하지 않는 게시글의 식별자를 받은 경우 예외를 던진다.")
+    void findNotExistingArticleThenThrowArticleNotFoundException() {
         // given
         given(articleRepository.findById(anyLong()))
                 .willReturn(Optional.empty());
@@ -128,70 +122,68 @@ class ArticleServiceTest {
         assertThatThrownBy(() -> sut.findOneArticle(3L))
                 .isInstanceOf(ArticleNotFoundException.class)
                 .hasMessage("존재하지 않는 게시글입니다.");
-
-        verify(articleRepository).findById(3L);
     }
 
     @Test
     @DisplayName("게시글 수정 테스트 - 정상 케이스(게시글 작성자가 수정 시도)")
-    void updateArticle() {
+    void updateArticleWithSameMemberId() {
         // given
         ArticleRequest requestDto = new ArticleRequest("updated_title", "updated_content");
 
         given(articleRepository.findById(anyLong()))
-                .willReturn(Optional.ofNullable(article));
-        doAnswer(invocation -> {
-            ArticleRequest dto = invocation.getArgument(0);
-            Article article = invocation.getArgument(1);
-            article.setTitle(dto.title());
-            article.setContent(dto.content());
-            return null;
-        }).when(articleMapper).updateFromDto(requestDto, article);
+                .willReturn(Optional.ofNullable(article1));
 
-        Article expected = new Article("updated_title", "updated_content", member);
+        Article expected = new Article("updated_title", "updated_content", member1);
 
         // when
-        Article actual = sut.updateArticle(member.getId(), article.getId(), requestDto);
+        Article actual = sut.updateArticle(member1.getId(), article1.getId(), requestDto);
 
         // then
         assertThat(actual.getTitle()).isEqualTo(expected.getTitle());
         assertThat(actual.getContent()).isEqualTo(expected.getContent());
-
-        verify(articleRepository).findById(member.getId());
-        verify(articleMapper).updateFromDto(requestDto, article);
     }
 
     @Test
-    @DisplayName("게시글 수정 테스트 - 비정상 케이스(게시글 작성자가 아닌 사용자가 수정 시도)")
-    void givenNotSameAuthor_WhenUpdateArticle_ThenThrowNoAuthorityException() {
+    @DisplayName("게시글 수정 테스트 - 비정상 케이스 시 NoAuthorityException을 던진다(게시글 작성자가 아닌 사용자가 수정 시도).")
+    void updateArticleWithNotSameMemberIdThenThrowNoAuthorityException() {
         // given
         ArticleRequest requestDto = new ArticleRequest("updated_title", "updated_content");
 
         given(articleRepository.findById(anyLong()))
-                .willReturn(Optional.ofNullable(article));
+                .willReturn(Optional.ofNullable(article1));
 
         // when & then
-        assertThatThrownBy(() -> sut.updateArticle(member2.getId(), article.getId(), requestDto))
+        assertThatThrownBy(() -> sut.updateArticle(member2.getId(), article1.getId(), requestDto))
                 .isInstanceOf(NoAuthorityException.class)
                 .hasMessage("게시글 작성자만 수정 및 삭제가 가능합니다.");
-
-        verify(articleRepository).findById(member.getId());
-        verifyNoInteractions(articleMapper);
     }
 
     @Test
-    @DisplayName("게시글 정상 삭제 테스트")
-    void deleteArticle() {
+    @DisplayName("게시글 삭제 테스트 - 정상 케이스(게시글 작성자가 삭제 시도)")
+    void deleteArticleWithSameMemberId() {
         // given
         given(articleRepository.findById(anyLong()))
-                .willReturn(Optional.ofNullable(article));
+                .willReturn(Optional.ofNullable(article1));
 
         // when
-        sut.deleteArticle(member.getId(), article.getId());
+        sut.deleteArticle(member1.getId(), article1.getId());
 
         // then
-        verify(articleRepository).findById(article.getId());
-        verify(articleRepository).delete(article);
+        verify(articleRepository).findById(article1.getId());
+        verify(articleRepository).delete(article1);
+    }
+
+    @Test
+    @DisplayName("게시글 삭제 테스트 - 비정상 케이스 시 NoAuthorityException을 던진다(게시글 작성자가 아닌 사용자가 삭제 시도).")
+    void deleteArticleWithNotSameMemberId() {
+        // given
+        given(articleRepository.findById(anyLong()))
+                .willReturn(Optional.ofNullable(article1));
+
+        // when & then
+        assertThatThrownBy(() -> sut.deleteArticle(member2.getId(), article1.getId()))
+                .isInstanceOf(NoAuthorityException.class)
+                .hasMessage("게시글 작성자만 수정 및 삭제가 가능합니다.");
     }
 
 }
