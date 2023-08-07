@@ -1,8 +1,10 @@
 # wanted-pre-onboarding-backend
-원티드 프리온보딩 백엔드 인턴십 선발 과제 제출용 레포지토리
+원티드 프리온보딩 백엔드 인턴십 선발 과제
+
+<br>
 
 ## 1. 성명
-**은지일**
+<h3>은지일</h3>
 
 <br>
 
@@ -32,5 +34,17 @@
 **7. 특정 게시글 삭제**
 - DELETE http://wanted-internship-app.ap-northeast-2.elasticbeanstalk.com/articles/{articleId}
 
+<br>
+
 ## 3. 데이터베이스 테이블 구조
-![원티드 인턴십 과제 ERDPNG](https://github.com/sarasa0310/wanted-pre-onboarding-backend/assets/129481038/b28b55d1-45dc-47d5-a113-cb2ec49976f1)
+![원티드 인턴십 과제 ERDPNG](https://github.com/sarasa0310/wanted-pre-onboarding-backend/assets/129481038/32c04d88-c082-4d0b-b41e-d2123f09c44f)
+
+<br>
+
+## 4. API 동작 촬영 데모 영상 링크
+
+## 5. 구현 방법 및 이유
+
+## 6. API 명세
+
+## 7. 배포된 API 주소와 설계한 AWS 환경 그림
