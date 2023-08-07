@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import sarasa.wantedinternship.domain.entity.Member;
-import sarasa.wantedinternship.dto.request.SignUpDto;
+import sarasa.wantedinternship.dto.request.EmailPasswordDto;
 import sarasa.wantedinternship.mapper.MemberMapper;
 import sarasa.wantedinternship.service.MemberService;
 
@@ -23,7 +23,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/members")
-    public ResponseEntity<?> signUp(@RequestBody @Valid SignUpDto dto) {
+    public ResponseEntity<?> signUp(@RequestBody @Valid EmailPasswordDto dto) {
         Member member = memberMapper.toMember(dto);
 
         Long savedMemberId = memberService.signUp(member);

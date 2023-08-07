@@ -13,7 +13,7 @@ public interface ArticleMapper {
     @Mapping(source = "id", target = "articleId")
     ArticleResponse toResponse(Article article);
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateFromDto(ArticleRequest dto, @MappingTarget Article entity);
+//    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+//    void updateFromDto(ArticleRequest dto, @MappingTarget Article entity);
 
 }
