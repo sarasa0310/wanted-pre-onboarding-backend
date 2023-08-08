@@ -11,7 +11,7 @@
 <br>
 
 ## 2. 배포된 API 주소와 설계한 AWS 환경 그림
-AWS Elastic Beanstalk를 활용하여 쉽고 빠르게 배포
+애플리케이션을 빠르게 배포하고 버전 관리도 쉽게 할 수 있도록 AWS Elastic Beanstalk를 활용하여 배포하였습니다.
 
 [API 주소] http://wanted-internship-app.ap-northeast-2.elasticbeanstalk.com
 
@@ -62,6 +62,8 @@ AWS Elastic Beanstalk를 활용하여 쉽고 빠르게 배포
 - Method: PATCH
 - URL: http://wanted-internship-app.ap-northeast-2.elasticbeanstalk.com/articles/{articleId}
 - 수정하고 싶은 게시글의 ID를 URL 마지막에 붙여서 요청을 보내주세요.
+- 제목이나 내용을 선택적으로 수정할 수도 있고, 한번에 모두 수정할 수도 있습니다.
+- 요청 본문에 수정하고 싶은 내용을 포함하여 요청을 보내주세요.
 - 게시글 수정은 게시글 작성자만 할 수 있습니다.
 - 게시글 수정을 하기 위해서는 요청 헤더에 발급받은 JWT AccessToken을 포함시켜서 보내주세요.
 
