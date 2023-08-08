@@ -8,7 +8,16 @@
 
 <br>
 
-## 2. 애플리케이션의 실행 방법
+## 2. 배포된 API 주소와 설계한 AWS 환경 그림
+AWS Elastic Beanstalk를 활용하여 쉽고 빠르게 배포
+
+[API 주소] http://wanted-internship-app.ap-northeast-2.elasticbeanstalk.com
+
+<img width="811" alt="스크린샷 2023-08-08 오후 4 17 44" src="https://github.com/sarasa0310/wanted-pre-onboarding-backend/assets/129481038/da85db15-890f-402d-a514-d6bd7471ebce">
+
+<br>
+
+## 3. 애플리케이션의 실행 방법
 
 <br>
 
@@ -36,15 +45,21 @@
 
 <br>
 
-## 3. 데이터베이스 테이블 구조
+## 4. 데이터베이스 테이블 구조
 ![원티드 인턴십 과제 ERDPNG](https://github.com/sarasa0310/wanted-pre-onboarding-backend/assets/129481038/32c04d88-c082-4d0b-b41e-d2123f09c44f)
 
 <br>
 
-## 4. API 동작 촬영 데모 영상 링크
+## 5. API 동작 촬영 데모 영상 링크
 
-## 5. 구현 방법 및 이유
+## 6. 구현 방법 및 이유
 
-## 6. API 명세
+<br>
 
-## 7. 배포된 API 주소와 설계한 AWS 환경 그림
+## 7. API 명세(요청, 응답 포함)
+Postman의 Documentation 기능을 이용하여 API 명세를 작성하였습니다.
+
+[배포된 API 문서 링크] https://documenter.getpostman.com/view/24688565/2s9XxzvD4b
+
+<img width="1440" alt="스크린샷 2023-08-08 오후 5 35 14" src="https://github.com/sarasa0310/wanted-pre-onboarding-backend/assets/129481038/25dd134e-0e92-4a99-97cf-9fba3ce5071c">
+
