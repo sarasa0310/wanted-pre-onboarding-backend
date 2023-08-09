@@ -83,7 +83,20 @@
 
 ## 5. API 동작 촬영 데모 영상 링크
 
+<br>
+
 ## 6. 구현 방법 및 이유
+- 최신 백엔드 개발 트렌드를 따라가기 위해 가장 최신 LTS 버전인 **Java 17**과 **Spring Boot 3.1.2**를 기반으로 애플리케이션을 구현하였습니다.
+
+- Java 14에서 도입된 **record**를 활용하여 DTO를 간결하게 구현할 수 있었지만, 비밀번호 암호화 및 JWT 인증을 위해 도입한 최신 **Spring Security 6.1** 버전에서 많은 업데이트가 있어 학습 및 반영에 어려움이 있었습니다.
+
+- **마주쳤던 문제**: 기존에 사용했던 antMatchers 메서드가 deprecated되고 새롭게 통일된 requestMatchers 메서드 패턴에서 오류가 발생했고, Spring Security 설정을 해주는 SecurityFilterChain Bean 등록 메서드에서 Lambda DSL 방식이 기본으로 도입되어 기존에 사용했던 메서드 체이닝 방식에서의 전환에 어려움을 겪었습니다.
+
+- **해결 방법**: requetMatchers 관련 오류는 Spring 공식 사이트의 문서(https://spring.io/security/cve-2023-34035)를 참고하여 해결하였으며, Lambda DSL 방식은 구글에서 검색한 모범 사례들 및 Spring 공식 사이트의 문서를 참고하여 해결하였습니다.
+
+- 버전관리 및 협업능력을 키우기 위하여 **Git-Flow** 전략을 채택하여 feature 브랜치에서 개발한 기능을 develop 브랜치에 순차적으로 merge하는 방식으로 애플리케이션을 점진적으로 개발하였고, **유다시티 커밋 컨벤션**을 채택하여 커밋 메시지를 체계화하고 자세하게 작성하여 팀원들이 내가 한 작업을 쉽게 확인할 수 있도록 하였습니다.
+
+<img width="1440" alt="스크린샷 2023-08-09 오전 11 50 33" src="https://github.com/sarasa0310/wanted-pre-onboarding-backend/assets/129481038/027653e9-4f39-4bd2-be0f-52ebff80d5ff">
 
 <br>
 
