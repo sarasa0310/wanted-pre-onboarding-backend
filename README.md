@@ -47,6 +47,7 @@
 ## 4. API 동작 촬영 데모 영상 링크
 Postman을 활용해 AWS 환경에 배포된 API 동작을 테스트하였습니다.
 정상 동작 촬영 영상은 Youtube 사이트에서 시청하실 수 있습니다.
+
 https://youtu.be/7qup0gXP7eM
 
 <br>
