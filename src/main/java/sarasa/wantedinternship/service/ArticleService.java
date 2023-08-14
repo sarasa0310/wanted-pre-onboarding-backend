@@ -1,6 +1,8 @@
 package sarasa.wantedinternship.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,23 +24,27 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final MemberRepository memberRepository;
 
+    @CacheEvict(value = "article", allEntries = true)
     public Long createArticle(Long memberId, Article article) {
         article.setMember(memberRepository.getReferenceById(memberId));
 
         return articleRepository.save(article).getId();
     }
 
+    @Cacheable("article")
     @Transactional(readOnly = true)
     public Page<Article> findArticles(Pageable pageable) {
         return articleRepository.findAll(pageable);
     }
 
+    @Cacheable("article")
     @Transactional(readOnly = true)
     public Article findOneArticle(Long articleId) {
         return articleRepository.findById(articleId)
                 .orElseThrow(() -> new ArticleNotFoundException("존재하지 않는 게시글입니다."));
     }
 
+    @CacheEvict(value = "article", allEntries = true)
     public Article updateArticle(Long memberId, Long articleId,
                                  ArticleRequest dto) {
         Article article = findOneArticle(articleId);
@@ -53,6 +59,7 @@ public class ArticleService {
         return article;
     }
 
+    @CacheEvict(value = "article", allEntries = true)
     public void deleteArticle(Long memberId, Long articleId) {
         Article article = findOneArticle(articleId);
 
